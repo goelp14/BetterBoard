@@ -1,64 +1,66 @@
 <html>
-
-<head>
+  <head>
     <title>BetterBoard</title>
-    <script src ="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-</head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
 
-<body>
-    <canvas id="board" width="500" height="500" style="border: 1px solid black"></canvas>
-</body>
-<script>
-    context = document.getElementById('board').getContext("2d");
-    $('#canvas').mousedown(function (e) {
-            var mouseX = e.pageX - this.offsetLeft;
-            var mouseY = e.pageY - this.offsetTop;
-
-            paint = true;
-            addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
-            redraw();
-        });
-    $('#canvas').mousemove(function (e) {
-            if (paint) {
-                addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
-                redraw();
-            }
-        });
-    $('#canvas').mouseup(function (e) {
-            paint = false;
-        });
-    $('#canvas').mouseleave(function (e) {
-            paint = false;
-        });
+  <body>
+    <canvas
+      id="board"
+      width="500"
+      height="500"
+      style="border: 1px solid black"
+    ></canvas>
+  </body>
+  <script>
+    context = document.getElementById("board").getContext("2d");
     var clickX = new Array();
-        var clickY = new Array();
-        var clickDrag = new Array();
-        var paint;
-
-        function addClick(x, y, dragging) {
-            clickX.push(x);
-            clickY.push(y);
-            clickDrag.push(dragging);
-        }
+    var clickY = new Array();
+    var clickDrag = new Array();
+    var paint;
+    function addClick(x, y, dragging) {
+      clickX.push(x);
+      clickY.push(y);
+      clickDrag.push(dragging);
+    }
     function redraw() {
-            context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+      context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
 
-            context.strokeStyle = "#df4b26";
-            context.lineJoin = "round";
-            context.lineWidth = 10;
+      context.strokeStyle = "#df4b26";
+      context.lineJoin = "round";
+      context.lineWidth = 10;
 
-            for (var i = 0; i < clickX.length; i++) {
-                context.beginPath();
-                if (clickDrag[i] && i) {
-                    context.moveTo(clickX[i - 1], clickY[i - 1]);
-                } else {
-                    context.moveTo(clickX[i] - 1, clickY[i]);
-                }
-                context.lineTo(clickX[i], clickY[i]);
-                context.closePath();
-                context.stroke();
-            }
+      for (var i = 0; i < clickX.length; i++) {
+        context.beginPath();
+        if (clickDrag[i] && i) {
+          context.moveTo(clickX[i - 1], clickY[i - 1]);
+        } else {
+          context.moveTo(clickX[i] - 1, clickY[i]);
         }
-</script>
+        context.lineTo(clickX[i], clickY[i]);
+        context.closePath();
+        context.stroke();
+      }
+    }
+    $("#board").mousedown(function(e) {
+      var mouseX = e.pageX - this.offsetLeft;
+      var mouseY = e.pageY - this.offsetTop;
 
+      paint = true;
+      addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+      redraw();
+    });
+    $("#board").mousemove(function(e) {
+      if (paint) {
+        addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+        redraw();
+      }
+    });
+    $("#board").mouseup(function(e) {
+      paint = false;
+    });
+    $("#board").mouseleave(function(e) {
+      paint = false;
+    });
+  </script>
 </html>
